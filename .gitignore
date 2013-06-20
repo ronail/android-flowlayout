@@ -4,3 +4,11 @@ target/
 *.iws
 *.log
 *.class
+
+# eclipse
+bin
+gen
+.settings
+.classpath
+project.properties
+.project
