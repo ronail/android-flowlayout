@@ -106,8 +106,8 @@ public class FlowLayout extends ViewGroup {
             int hSpacing = this.getHorizontalSpacing(lp);
             int vSpacing = this.getVerticalSpacing(lp);
 
-            int childWidth = child.getMeasuredWidth();
-            int childHeight = child.getMeasuredHeight();
+            int childWidth = lp.width > 0 ? lp.width : child.getMeasuredWidth();
+            int childHeight = lp.height > 0 ? lp.height : child.getMeasuredHeight();
 
             int childLength;
             int childThickness;
@@ -190,7 +190,7 @@ public class FlowLayout extends ViewGroup {
         for (int i = 0; i < count; i++) {
             View child = getChildAt(i);
             LayoutParams lp = (LayoutParams) child.getLayoutParams();
-            child.layout(lp.x, lp.y, lp.x + child.getMeasuredWidth(), lp.y + child.getMeasuredHeight());
+            child.layout(lp.x, lp.y, lp.x + (lp.width > 0 ? lp.width : child.getMeasuredWidth()), lp.y + (lp.height > 0 ? lp.height : child.getMeasuredHeight()));
         }
     }
 
