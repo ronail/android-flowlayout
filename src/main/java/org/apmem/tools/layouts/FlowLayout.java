@@ -7,6 +7,9 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.MeasureSpec;
+import android.widget.FrameLayout.LayoutParams;
+
 import org.apmem.tools.R;
 
 /**
@@ -64,7 +67,6 @@ public class FlowLayout extends ViewGroup {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int sizeWidth = MeasureSpec.getSize(widthMeasureSpec) - this.getPaddingRight() - this.getPaddingLeft();
         int sizeHeight = MeasureSpec.getSize(heightMeasureSpec) - this.getPaddingRight() - this.getPaddingLeft();
-
         int modeWidth = MeasureSpec.getMode(widthMeasureSpec);
         int modeHeight = MeasureSpec.getMode(heightMeasureSpec);
 
@@ -96,12 +98,33 @@ public class FlowLayout extends ViewGroup {
                 continue;
             }
 
-            child.measure(
-                    MeasureSpec.makeMeasureSpec(sizeWidth, modeWidth == MeasureSpec.EXACTLY ? MeasureSpec.AT_MOST : modeWidth),
-                    MeasureSpec.makeMeasureSpec(sizeHeight, modeHeight == MeasureSpec.EXACTLY ? MeasureSpec.AT_MOST : modeHeight)
-            );
 
             LayoutParams lp = (LayoutParams) child.getLayoutParams();
+            int childWidthMeasureSpec;
+            int childHeightMeasureSpec;
+
+            if (lp.width < 0) {
+            	childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(sizeWidth, modeWidth == MeasureSpec.EXACTLY ? MeasureSpec.AT_MOST : modeWidth);
+            } else {
+                childWidthMeasureSpec = getChildMeasureSpec(widthMeasureSpec,
+                		this.getPaddingRight() - this.getPaddingLeft(),
+                        lp.width);
+            }
+            
+            if (lp.height < 0) {
+            	childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(sizeHeight, modeHeight == MeasureSpec.EXACTLY ? MeasureSpec.AT_MOST : modeHeight);
+            } else {
+                childHeightMeasureSpec = getChildMeasureSpec(heightMeasureSpec,
+                		this.getPaddingTop() - this.getPaddingBottom(),
+                        lp.height);
+            }
+            child.measure(
+//                    MeasureSpec.makeMeasureSpec(sizeWidth, modeWidth == MeasureSpec.EXACTLY ? MeasureSpec.AT_MOST : modeWidth),
+            		childWidthMeasureSpec,
+//                    MeasureSpec.makeMeasureSpec(sizeHeight, modeHeight == MeasureSpec.EXACTLY ? MeasureSpec.AT_MOST : modeHeight)
+            		childHeightMeasureSpec
+            );
+
 
             int hSpacing = this.getHorizontalSpacing(lp);
             int vSpacing = this.getVerticalSpacing(lp);
