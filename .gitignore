@@ -12,3 +12,15 @@ gen
 .classpath
 project.properties
 .project
+
+# Android Studio
+.idea
+#.idea/workspace.xml - uncomment this and comment/delete .idea if it better suit your needs
+.gradle
+local.properties
+out
+build
+production
+*.iml
+*.iws
+*.ipr
